@@ -1,3 +1,5 @@
+import io.reactivex.Single
+
 data class Publication(val title: String, val description: String, val siteArea: SiteArea)
 
 class PublicationService {
@@ -15,6 +17,11 @@ class PublicationService {
         Publication("New Scientist", "Science news and science articles from New Scientist", SiteArea.ACADEMIC)
     )
 
-    private val enterprisePublications: List<Publication>
-        get() = publications.filter { it.siteArea == SiteArea.ENTERPRISE }
+    fun publications(user: User): Single<List<Publication>> = when (user) {
+        is Root -> TODO()
+        is Editor -> TODO()
+        is AllAccess -> TODO()
+        is Standard -> TODO()
+        NotLoggedIn -> TODO()
+    }
 }
