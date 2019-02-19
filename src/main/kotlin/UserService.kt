@@ -17,7 +17,7 @@ class UserService {
     private val academicViewer: User = Standard("Cora", SiteArea.ACADEMIC, "DxCdvGYM2G")
     private val enterpriseViewer: User = Standard("Mike", SiteArea.ENTERPRISE, "fU57LODMNU")
 
-    fun retrieveUser(username: String, password: String) =
+    fun retrieveUser(userInput: UserInput) =
         Observable.fromCallable {
             when (username) {
                 "Joe" -> rootUser
