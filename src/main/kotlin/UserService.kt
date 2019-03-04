@@ -8,18 +8,19 @@ data class AllAccess(val name: String, val accessToken: String) : User()
 data class Standard(val name: String, val siteArea: SiteArea, val accessToken: String) : User()
 object NotLoggedIn : User()
 
-class UserService {
 
-    private val rootUser: User = Root("Joe", "aeFRa4tZYy")
-    private val academicEditor: User = Editor("Bob", SiteArea.ACADEMIC, "Hv6kwbnKJb")
-    private val enterpriseEditor: User = Editor("Tim", SiteArea.ENTERPRISE, "ehW3tQGxdc")
-    private val allAccess: User = AllAccess("Kathleen", "ADroRMIoLL")
-    private val academicViewer: User = Standard("Cora", SiteArea.ACADEMIC, "DxCdvGYM2G")
-    private val enterpriseViewer: User = Standard("Mike", SiteArea.ENTERPRISE, "fU57LODMNU")
+val rootUser: User = Root("Joe", "aeFRa4tZYy")
+val academicEditor: User = Editor("Bob", SiteArea.ACADEMIC, "Hv6kwbnKJb")
+val enterpriseEditor: User = Editor("Tim", SiteArea.ENTERPRISE, "ehW3tQGxdc")
+val allAccess: User = AllAccess("Kathleen", "ADroRMIoLL")
+val academicViewer: User = Standard("Cora", SiteArea.ACADEMIC, "DxCdvGYM2G")
+val enterpriseViewer: User = Standard("Mike", SiteArea.ENTERPRISE, "fU57LODMNU")
+
+class UserService {
 
     fun retrieveUser(userInput: UserInput) =
         Observable.fromCallable {
-            when (username) {
+            when (userInput.username) {
                 "Joe" -> rootUser
                 "Bob" -> academicEditor
                 "Tim" -> enterpriseEditor
