@@ -8,10 +8,10 @@ class PublicationServiceTest {
 
         val publications = service.publications(rootUser).test()
 
-        publications.assertValueSequenceOnly(expectedPublications)
+        publications.assertValueSequence(expectedPublications)
     }
+
+
 
     private fun createService() = PublicationService(defaultPublications())
 }
-
-private fun ReadOnlyPublication.toEditablePublication() = EditablePublication(title, description, siteArea)

@@ -20,3 +20,5 @@ fun defaultPublications(): List<ReadOnlyPublication> {
         ReadOnlyPublication("New Scientist", "Science news and science articles from New Scientist", SiteArea.ACADEMIC)
     )
 }
+
+fun ReadOnlyPublication.toEditablePublication() = EditablePublication(title, description, siteArea)
