@@ -12,7 +12,7 @@ object NotLoggedIn : User()
 val rootUser: User = Root("Joe", "aeFRa4tZYy")
 val academicEditor: User = Editor("Bob", SiteArea.ACADEMIC, "Hv6kwbnKJb")
 val enterpriseEditor: User = Editor("Tim", SiteArea.ENTERPRISE, "ehW3tQGxdc")
-val allAccess: User = AllAccess("Kathleen", "ADroRMIoLL")
+val allAccessViewer: User = AllAccess("Kathleen", "ADroRMIoLL")
 val academicViewer: User = Standard("Cora", SiteArea.ACADEMIC, "DxCdvGYM2G")
 val enterpriseViewer: User = Standard("Mike", SiteArea.ENTERPRISE, "fU57LODMNU")
 
@@ -24,7 +24,7 @@ class UserService {
                 "Joe" -> rootUser
                 "Bob" -> academicEditor
                 "Tim" -> enterpriseEditor
-                "Kathleen" -> allAccess
+                "Kathleen" -> allAccessViewer
                 "Cora" -> academicViewer
                 "Mike" -> enterpriseViewer
                 else -> NotLoggedIn
