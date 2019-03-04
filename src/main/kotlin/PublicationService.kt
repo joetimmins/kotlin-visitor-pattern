@@ -13,22 +13,30 @@ data class EditablePublication(
     override val siteArea: SiteArea
 ) : Publication(title, description, siteArea)
 
-class PublicationService(private val publications: List<ReadOnlyPublication> = defaultPublications) {
+class PublicationService(publications: List<ReadOnlyPublication> = defaultPublications) {
 
-    fun publications(user: User): Observable<Publication> = when (user) {
-        is Root -> publications
-            .map { it.toEditablePublication() }
-            .toObservable()
-        is Editor -> publications
-            .filter { it.siteArea == user.siteArea }
-            .map { it.toEditablePublication() }
-            .toObservable()
-        is AllAccess -> publications.toObservable()
-        is Standard -> publications
-            .filter { it.siteArea == user.siteArea }
-            .toObservable()
-        NotLoggedIn -> Observable.empty()
-    }
+    private val handler = UserHandler(publications)
+
+    fun publications(user: User): Observable<Publication> = user.dispatch(handler)
+}
+
+class UserHandler(private val publications: List<ReadOnlyPublication>) {
+    fun handle(user: Root): Observable<Publication> = publications
+        .map { it.toEditablePublication() }
+        .toObservable()
+
+    fun handle(user: Editor): Observable<Publication> = publications
+        .filter { it.siteArea == user.siteArea }
+        .map { it.toEditablePublication() }
+        .toObservable()
+
+    fun handle(user: AllAccess): Observable<Publication> = publications.toObservable()
+
+    fun handle(user: Standard): Observable<Publication> = publications
+        .filter { it.siteArea == user.siteArea }
+        .toObservable()
+
+    fun handle(user: NotLoggedIn): Observable<Publication> = Observable.empty<Publication>()
 }
 
 private fun <E> List<E>.toObservable(): Observable<E> = Observable.fromIterable(this)

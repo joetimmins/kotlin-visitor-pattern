@@ -1,12 +1,28 @@
 import io.reactivex.Observable
 
-sealed class User
+sealed class User {
+    abstract fun dispatch(handler: UserHandler): Observable<Publication>
+}
 
-data class Root(val name: String, val accessToken: String) : User()
-data class Editor(val name: String, val siteArea: SiteArea, val accessToken: String) : User()
-data class AllAccess(val name: String, val accessToken: String) : User()
-data class Standard(val name: String, val siteArea: SiteArea, val accessToken: String) : User()
-object NotLoggedIn : User()
+data class Root(val name: String, val accessToken: String) : User() {
+    override fun dispatch(handler: UserHandler) = handler.handle(this)
+}
+
+data class Editor(val name: String, val siteArea: SiteArea, val accessToken: String) : User() {
+    override fun dispatch(handler: UserHandler) = handler.handle(this)
+}
+
+data class AllAccess(val name: String, val accessToken: String) : User() {
+    override fun dispatch(handler: UserHandler) = handler.handle(this)
+}
+
+data class Standard(val name: String, val siteArea: SiteArea, val accessToken: String) : User() {
+    override fun dispatch(handler: UserHandler) = handler.handle(this)
+}
+
+object NotLoggedIn : User() {
+    override fun dispatch(handler: UserHandler) = handler.handle(this)
+}
 
 
 val rootUser: User = Root("Joe", "aeFRa4tZYy")
