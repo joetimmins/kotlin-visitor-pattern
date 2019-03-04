@@ -1,26 +1,26 @@
 import io.reactivex.Observable
 
-sealed class User {
-    abstract fun accept(visitor: UserVisitor): Observable<Publication>
+interface User {
+    fun accept(visitor: UserVisitor): Observable<Publication>
 }
 
-data class Root(val name: String, val accessToken: String) : User() {
+data class Root(val name: String, val accessToken: String) : User {
     override fun accept(visitor: UserVisitor) = visitor.visit(this)
 }
 
-data class Editor(val name: String, val siteArea: SiteArea, val accessToken: String) : User() {
+data class Editor(val name: String, val siteArea: SiteArea, val accessToken: String) : User {
     override fun accept(visitor: UserVisitor) = visitor.visit(this)
 }
 
-data class AllAccess(val name: String, val accessToken: String) : User() {
+data class AllAccess(val name: String, val accessToken: String) : User {
     override fun accept(visitor: UserVisitor) = visitor.visit(this)
 }
 
-data class Standard(val name: String, val siteArea: SiteArea, val accessToken: String) : User() {
+data class Standard(val name: String, val siteArea: SiteArea, val accessToken: String) : User {
     override fun accept(visitor: UserVisitor) = visitor.visit(this)
 }
 
-object NotLoggedIn : User() {
+object NotLoggedIn : User {
     override fun accept(visitor: UserVisitor) = visitor.visit(this)
 }
 
