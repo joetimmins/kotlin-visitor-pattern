@@ -1,4 +1,4 @@
-import io.reactivex.Observable
+import io.reactivex.Single
 
 interface User {
     fun accept(visitor: UserVisitor): Observable<Publication>
@@ -35,7 +35,7 @@ val enterpriseViewer: User = Standard("Mike", SiteArea.ENTERPRISE, "fU57LODMNU")
 class UserService {
 
     fun retrieveUser(userInput: UserInput) =
-        Observable.fromCallable {
+        Single.fromCallable {
             when (userInput.username) {
                 "Joe" -> rootUser
                 "Bob" -> academicEditor
