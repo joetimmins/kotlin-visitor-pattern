@@ -20,7 +20,7 @@ class PublicationService(publications: List<ReadOnlyPublication> = defaultPublic
     fun publications(user: User): Observable<Publication> = user.accept(handler)
 }
 
-private class UserVisitor(private val publications: List<ReadOnlyPublication>) {
+class UserVisitor(private val publications: List<ReadOnlyPublication>) {
     fun visit(user: Root): Observable<Publication> = publications
         .map { it.toEditablePublication() }
         .toObservable()
