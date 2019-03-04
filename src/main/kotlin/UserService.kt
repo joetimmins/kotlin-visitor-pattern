@@ -1,3 +1,4 @@
+import io.reactivex.Observable
 import io.reactivex.Single
 
 interface User {
