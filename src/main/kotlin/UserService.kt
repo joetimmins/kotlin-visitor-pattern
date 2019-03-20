@@ -2,27 +2,27 @@ import io.reactivex.Observable
 import io.reactivex.Single
 
 interface User {
-    fun accept(visitor: UserVisitor): Observable<Publication>
+    fun resolvePublications(visitor: UserVisitor): Observable<Publication>
 }
 
 data class Root(val name: String, val accessToken: String) : User {
-    override fun accept(visitor: UserVisitor) = visitor.visit(this)
+    override fun resolvePublications(visitor: UserVisitor) = visitor.visit(this)
 }
 
 data class Editor(val name: String, val siteArea: SiteArea, val accessToken: String) : User {
-    override fun accept(visitor: UserVisitor) = visitor.visit(this)
+    override fun resolvePublications(visitor: UserVisitor) = visitor.visit(this)
 }
 
 data class AllAccess(val name: String, val accessToken: String) : User {
-    override fun accept(visitor: UserVisitor) = visitor.visit(this)
+    override fun resolvePublications(visitor: UserVisitor) = visitor.visit(this)
 }
 
 data class Standard(val name: String, val siteArea: SiteArea, val accessToken: String) : User {
-    override fun accept(visitor: UserVisitor) = visitor.visit(this)
+    override fun resolvePublications(visitor: UserVisitor) = visitor.visit(this)
 }
 
 object NotLoggedIn : User {
-    override fun accept(visitor: UserVisitor) = visitor.visit(this)
+    override fun resolvePublications(visitor: UserVisitor) = visitor.visit(this)
 }
 
 

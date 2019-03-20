@@ -15,9 +15,9 @@ data class EditablePublication(
 
 class PublicationService(publications: List<ReadOnlyPublication> = defaultPublications) {
 
-    private val handler = UserVisitor(publications)
+    private val userVisitor = UserVisitor(publications)
 
-    fun publications(user: User): Observable<Publication> = user.accept(handler)
+    fun publications(user: User): Observable<Publication> = user.resolvePublications(userVisitor)
 }
 
 class UserVisitor(private val publications: List<ReadOnlyPublication>) {
