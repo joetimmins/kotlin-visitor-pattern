@@ -10,7 +10,7 @@ class PublicationServiceTest {
             plosOne,
             nature,
             newScientist
-        ).map { it.toEditablePublication() }
+        ).asEditablePublications()
         val service = createService()
 
         val actualPublications = service.publications(rootUser).test()
@@ -23,7 +23,7 @@ class PublicationServiceTest {
             plosOne,
             nature,
             newScientist
-        ).map { it.toEditablePublication() }
+        ).asEditablePublications()
         val service = createService()
 
         val actualPublications = service.publications(academicEditor).test()
@@ -36,7 +36,7 @@ class PublicationServiceTest {
             theEconomist,
             fortune,
             fastCompany
-        ).map { it.toEditablePublication() }
+        ).asEditablePublications()
         val service = createService()
 
         val actualPublications = service.publications(enterpriseEditor).test()
@@ -92,6 +92,8 @@ class PublicationServiceTest {
         val actualPublications = service.publications(NotLoggedIn).test()
         actualPublications.assertNoValues()
     }
+
+    private fun List<ReadOnlyPublication>.asEditablePublications() = map { it.toEditablePublication() }
 
     private fun createService() = PublicationService(defaultPublications)
 }
