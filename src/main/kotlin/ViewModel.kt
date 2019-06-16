@@ -28,8 +28,8 @@ data class Editable(
 
 data class UiState(
     val name: String,
-    val editableList: List<Editable>,
-    val readOnlyList: List<ReadOnly>
+    val editables: List<Editable>,
+    val readOnlies: List<ReadOnly>
 )
 
 data class UserInput(val username: String, val password: String)
