@@ -93,7 +93,9 @@ class PublicationServiceTest {
         actualPublications.assertNoValues()
     }
 
-    private fun List<ReadOnlyPublication>.asEditablePublications() = map { it.toEditablePublication() }
+    private fun List<Publication>.asEditablePublications() = map { it.toEditablePublication() }
 
     private fun createService() = PublicationService(defaultPublications)
 }
+
+private fun Publication.toEditablePublication(): Publication = copy(title, description, siteArea, true)

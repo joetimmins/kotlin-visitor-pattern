@@ -1,33 +1,33 @@
 import io.reactivex.Observable
 
-sealed class Publication(open val title: String, open val description: String, open val siteArea: SiteArea)
-data class ReadOnlyPublication(
-    override val title: String,
-    override val description: String,
-    override val siteArea: SiteArea
-) : Publication(title, description, siteArea)
+data class Publication(
+    val title: String,
+    val description: String,
+    val siteArea: SiteArea,
+    val isEditable: Boolean = false
+)
 
-data class EditablePublication(
-    override val title: String,
-    override val description: String,
-    override val siteArea: SiteArea
-) : Publication(title, description, siteArea)
-
-class PublicationService(publications: List<ReadOnlyPublication> = defaultPublications) {
-
-    private val userVisitor = UserVisitor(publications)
-
-    fun publications(user: User): Observable<Publication> = user.resolvePublications(userVisitor)
+enum class SiteArea {
+    ACADEMIC,
+    ENTERPRISE
 }
 
-class UserVisitor(private val publications: List<ReadOnlyPublication>) {
+class PublicationService(
+    publications: List<Publication> = defaultPublications,
+    private val publicationResolver: PublicationResolver = PublicationResolver(publications)
+) {
+
+    fun publications(user: User): Observable<Publication> = user.resolvePublications(publicationResolver)
+}
+
+class PublicationResolver(private val publications: List<Publication>) {
     fun visit(user: Root): Observable<Publication> = publications
-        .map { it.toEditablePublication() }
+        .map { it.makeEditable() }
         .toObservable()
 
     fun visit(user: Editor): Observable<Publication> = publications
         .filter { it.siteArea == user.siteArea }
-        .map { it.toEditablePublication() }
+        .map { it.makeEditable() }
         .toObservable()
 
     fun visit(user: AllAccess): Observable<Publication> = publications.toObservable()
@@ -38,5 +38,13 @@ class UserVisitor(private val publications: List<ReadOnlyPublication>) {
 
     fun visit(user: NotLoggedIn): Observable<Publication> = Observable.empty<Publication>()
 }
+
+private fun Publication.makeEditable() = copy(
+    title = title,
+    description = description,
+    siteArea = siteArea,
+    isEditable = true
+)
+
 
 private fun <E> List<E>.toObservable(): Observable<E> = Observable.fromIterable(this)
