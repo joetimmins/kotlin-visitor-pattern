@@ -3,13 +3,12 @@ import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
 class ViewModel(
     private val userService: UserService = UserService(),
     private val publicationService: PublicationService = PublicationService(),
-    private val _uiState: BehaviorSubject<UiState> = BehaviorSubject.create(),
+    private val _uiState: PublishSubject<UiState> = PublishSubject.create(),
     val uiState: Observable<UiState> = _uiState,
     val userInputEvents: PublishSubject<UserInput> = PublishSubject.create()
 ) {

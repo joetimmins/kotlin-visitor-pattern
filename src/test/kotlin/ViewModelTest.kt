@@ -15,8 +15,8 @@ class ViewModelTest {
         val expectedUiState = UiState("Joe", expectedEditables, emptyList())
 
         val viewModel = createViewModel()
-        viewModel.userInputEvents.onNext(root)
         val actualUiState = viewModel.uiState.test()
+        viewModel.userInputEvents.onNext(root)
 
         actualUiState.assertValuesOnly(expectedUiState)
     }
@@ -37,8 +37,8 @@ class ViewModelTest {
         val expectedUiState = UiState("Bob", expectedEditables, expectedReadOnlies)
 
         val viewModel = createViewModel()
-        viewModel.userInputEvents.onNext(academicEditor)
         val actualUiState = viewModel.uiState.test()
+        viewModel.userInputEvents.onNext(academicEditor)
 
         actualUiState.assertValuesOnly(expectedUiState)
     }
