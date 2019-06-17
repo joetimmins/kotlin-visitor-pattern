@@ -1,8 +1,5 @@
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.plusAssign
-import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.PublishSubject
 
 class ViewModel(
@@ -13,18 +10,13 @@ class ViewModel(
     val userInputEvents: PublishSubject<UserInput> = PublishSubject.create()
 ) {
 
-    private val disposables = CompositeDisposable()
-
     init {
-        val retrievedUser = userInputEvents
+        val generatedUiState = userInputEvents
             .flatMapSingle { userInput -> userService.retrieveUser(userInput) }
             .flatMapSingle { retrievePublicationsAsBio(it) }
             .map { it.convertToUiState() }
 
-        disposables += retrievedUser.subscribeBy(
-            onNext = { _uiState.onNext(it) },
-            onError = { _uiState.onError(it) }
-        )
+        generatedUiState.subscribe(_uiState)
     }
 
     private fun retrievePublicationsAsBio(user: User): Single<BullshitIntermediateObject> =
