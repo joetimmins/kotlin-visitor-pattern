@@ -20,10 +20,16 @@ class PublicationServiceTest {
     @Test
     fun `academic editor can edit publications in the academic area`() {
         val expectedPublications = listOf(
-            plosOne,
-            nature,
-            newScientist
-        ).asEditablePublications()
+            theEconomist,
+            fortune,
+            fastCompany
+        ).plus(
+            listOf(
+                plosOne,
+                nature,
+                newScientist
+            ).asEditablePublications()
+        )
         val service = createService()
 
         val actualPublications = service.publications(academicEditor).test()
@@ -37,6 +43,13 @@ class PublicationServiceTest {
             fortune,
             fastCompany
         ).asEditablePublications()
+            .plus(
+                listOf(
+                    plosOne,
+                    nature,
+                    newScientist
+                )
+            )
         val service = createService()
 
         val actualPublications = service.publications(enterpriseEditor).test()

@@ -26,8 +26,7 @@ class PublicationResolver(private val publications: List<Publication>) {
         .toObservable()
 
     fun visit(user: Editor): Observable<Publication> = publications
-        .filter { it.siteArea == user.siteArea }
-        .map { it.makeEditable() }
+        .map { if (it.siteArea == user.siteArea) it.makeEditable() else it }
         .toObservable()
 
     fun visit(user: AllAccess): Observable<Publication> = publications.toObservable()

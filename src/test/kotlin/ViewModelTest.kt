@@ -109,9 +109,21 @@ class ViewModelTest {
     private fun createViewModel() = ViewModel()
 }
 
-private fun List<Publication>.asEditables() = map { it.toEditable() }
-private fun Publication.toEditable(): Editable = Editable(this)
+private fun List<Publication>.asEditables() = map {
+    it.copy(
+        title = it.title,
+        description = it.description,
+        siteArea = it.siteArea,
+        isEditable = true
+    )
+}.map { Editable(it) }
 
-private fun List<Publication>.asReadOnlies() = map { it.toReadOnly() }
-private fun Publication.toReadOnly(): ReadOnly = ReadOnly(this)
+private fun List<Publication>.asReadOnlies() = map {
+    it.copy(
+        title = it.title,
+        description = it.description,
+        siteArea = it.siteArea,
+        isEditable = false
+    )
+}.map { ReadOnly(it) }
 

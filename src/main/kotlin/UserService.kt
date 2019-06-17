@@ -2,26 +2,30 @@ import io.reactivex.Observable
 import io.reactivex.Single
 
 interface User {
+    val name: String
     fun resolvePublications(visitor: PublicationResolver): Observable<Publication>
 }
 
-data class Root(val name: String, val accessToken: String) : User {
+data class Root(override val name: String, val accessToken: String) : User {
     override fun resolvePublications(visitor: PublicationResolver) = visitor.visit(this)
 }
 
-data class Editor(val name: String, val siteArea: SiteArea, val accessToken: String) : User {
+data class Editor(override val name: String, val siteArea: SiteArea, val accessToken: String) : User {
     override fun resolvePublications(visitor: PublicationResolver) = visitor.visit(this)
 }
 
-data class AllAccess(val name: String, val accessToken: String) : User {
+data class AllAccess(override val name: String, val accessToken: String) : User {
     override fun resolvePublications(visitor: PublicationResolver) = visitor.visit(this)
 }
 
-data class Standard(val name: String, val siteArea: SiteArea, val accessToken: String) : User {
+data class Standard(override val name: String, val siteArea: SiteArea, val accessToken: String) : User {
     override fun resolvePublications(visitor: PublicationResolver) = visitor.visit(this)
 }
 
 object NotLoggedIn : User {
+    override val name: String
+        get() = "Not logged in"
+
     override fun resolvePublications(visitor: PublicationResolver) = visitor.visit(this)
 }
 
