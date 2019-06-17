@@ -38,7 +38,7 @@ class ViewModel(
     data class BullshitIntermediateObject(val name: String, val publications: List<Publication>) {
         fun addPublication(publication: Publication) = copy(
             name = name,
-            publications = publications.addElement(publication)
+            publications = publications.plusElement(publication)
         )
     }
 
@@ -47,13 +47,6 @@ class ViewModel(
         val readOnlies = publications.filter { !it.isEditable }.map { ReadOnly(it) }
         return UiState(name, editables, readOnlies)
     }
-}
-
-
-private fun <T> List<T>.addElement(element: T): List<T> {
-    val mutableList = toMutableList()
-    mutableList.add(element)
-    return mutableList
 }
 
 data class Editable(
